@@ -1,0 +1,12 @@
+# Ignore venv
+venv/
+
+# Temporary files in Python 
+__pycache__/
+*.pyc 
+
+# Logs 
+*.logs 
+
+# Jupyter notebook checkpoints 
+.ipynb_checkpoints/
