@@ -2,7 +2,9 @@ import os
 import sys
 import shutil
 
-MIN_SIZE = 20 * 1024  # minimal size of file (20 KB)
+
+# In FUTURE this parameter is choosing in GUI
+MIN_SIZE = 1024  # minimal size of file (20 KB) 
 
 def is_empty_text_file(filepath):
     """Check if a text/docx/pdf file is empty or nearly empty."""
@@ -12,9 +14,9 @@ def is_empty_text_file(filepath):
             with open(filepath, "r", errors="ignore") as f:
                 content = f.read(200).strip()
                 return len(content) == 0
-        elif ext in [".docx", ".pdf"]:
-            # simplification: consider empty if <1 byte
-            return os.path.getsize(filepath) < 1
+        elif ext in [".docx", ".pdf", ".doc"]:
+            # simplification: consider empty if < 1 kilobyte
+            return os.path.getsize(filepath) < MIN_SIZE
     except Exception:
         return False
     return False
@@ -31,7 +33,7 @@ def sort_files(source_dir):
             filepath = os.path.join(root, file)
 
             # skip small files
-            if os.path.getsize(filepath) < 1:
+            if os.path.getsize(filepath) < MIN_SIZE:
                 continue
 
             #  skip empty documents
