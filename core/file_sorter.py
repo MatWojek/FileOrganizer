@@ -57,15 +57,3 @@ def sort_files(source_dir):
 
     print(f"All files have been sorted into: {dest_dir}")
 
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python3 sort_files.py /path/to/folder")
-        sys.exit(1)
-
-    source_folder = sys.argv[1]
-    if not os.path.isdir(source_folder):
-        print("The provided path is not a directory!")
-        sys.exit(1)
-
-    sort_files(source_folder)

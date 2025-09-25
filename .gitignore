@@ -10,3 +10,8 @@ __pycache__/
 
 # Jupyter notebook checkpoints 
 .ipynb_checkpoints/
+
+# Creating a new venv 
+python3 -m venv venv
+source venv/bin/activate
+pip install nazwa_pakietu
