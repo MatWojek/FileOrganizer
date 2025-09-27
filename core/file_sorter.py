@@ -23,7 +23,8 @@ def is_empty_text_file(filepath):
 
 
 def sort_files(source_dir):
-    # destination folder: next to the input folder
+    """Sort files in the selected directory into categorized subfolders."""
+    # Destination folder: next to the input folder
     base_dir = os.path.dirname(os.path.abspath(source_dir.rstrip("/")))
     dest_dir = os.path.join(base_dir, "_sorted")
     os.makedirs(dest_dir, exist_ok=True)
@@ -32,28 +33,27 @@ def sort_files(source_dir):
         for file in files:
             filepath = os.path.join(root, file)
 
-            # skip small files
+            # Skip small files
             if os.path.getsize(filepath) < MIN_SIZE:
                 continue
 
-            #  skip empty documents
+            # Skip empty documents
             if is_empty_text_file(filepath):
                 continue
 
-            # get file extension
+            # Get file extension
             ext = os.path.splitext(file)[1].lower().replace(".", "")
             if not ext:
-                ext = "no_extension" 
+                ext = "no_extension"
 
-            # target folder based on extension
+            # Target folder based on extension
             target_dir = os.path.join(dest_dir, ext)
             os.makedirs(target_dir, exist_ok=True)
 
-            # move file
+            # Move file
             try:
                 shutil.move(filepath, os.path.join(target_dir, file))
             except Exception as e:
                 print(f"Error moving {file}: {e}")
 
     print(f"All files have been sorted into: {dest_dir}")
-
