@@ -15,3 +15,9 @@ __pycache__/
 python3 -m venv venv
 source venv/bin/activate
 pip install nazwa_pakietu
+
+# Open a virtual without pip
+python3 -m venv --without-pip venv
+source venv/bin/activate
+curl -sS https://bootstrap.pypa.io/get-pip.py | python
+pip install pyside6

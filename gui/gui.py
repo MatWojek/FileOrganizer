@@ -1,11 +1,7 @@
 import os
 import sys
 
-# Add the parent directory (FileOrganizer) to sys.path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from PySide6.QtWidgets import (
-    QApplication, 
     QMainWindow, 
     QFileDialog, 
     QMessageBox, 
@@ -77,16 +73,37 @@ class FileExplorer(QMainWindow):
         #sort_files_button.setObjectName("sortFilesButton")
         sort_files_button.clicked.connect(self.on_button_click)
 
-        sort_image_button = QPushButton("Sort Image")
-        sort_image_button.clicked.connect(self.on_sort_images)
+        sort_images_button = QPushButton("Sort Image")
+        sort_images_button.clicked.connect(self.on_sort_images)
 
-        self.buttons_list = [sort_files_button, sort_image_button]
+        sort_videos_button = QPushButton("Sort Videos")
+        sort_videos_button.clicked.connect(self.on_sort_videos)
+        
+        # Later add one button "Sort" and then you choose what type of sort "all files, videos, images"
+
+        convertion_button = QPushButton("Convert")
+        convertion_button.clicked.connect(self.on_convertion_file)
+
+        # Later add the select box where we choose what type of convertion to use "png -> jpg, jpg -> png"
+
+        # Maybe late there are a "+" button to adding and installing a important module to use 
+
+        add_module_button = QPushButton("+")
+      
+        delete_duplicates_button = QPushButton("Delete Duplicates")
+        delete_duplicates_button.clicked.connect(self.on_delete_duplicates)
+
+        self.buttons_list = [sort_files_button, sort_images_button, sort_videos_button, convertion_button, delete_duplicates_button, add_module_button]
 
         # Add buttons to a layout
         button_widget = QWidget()
         button_layout = QVBoxLayout()
         button_layout.addWidget(sort_files_button)
-        button_layout.addWidget(sort_image_button)
+        button_layout.addWidget(sort_images_button)
+        button_layout.addWidget(sort_videos_button)
+        button_layout.addWidget(convertion_button)
+        button_layout.addWidget(delete_duplicates_button)
+        button_layout.addWidget(add_module_button)
         button_layout.addStretch()  # Add stretch to align buttons at the top
         button_widget.setLayout(button_layout)
 
@@ -170,34 +187,12 @@ class FileExplorer(QMainWindow):
     def on_sort_images(self):
         """ Call the sort_images function and handle errors. """
         pass
-    
-def qt_message_handler(mode, context, message):
-        if "Permission denied" in message:
-            QMessageBox.critical(None, "Permission Error", message)
 
-            if window and hasattr(window, "last_valid_index"):
-                window.list_view.setRootIndex(window.last_valid_index)
-    
+    def on_convertion_file(self):
+        pass
 
-if __name__ == "__main__":
+    def on_delete_duplicates(self):
+        pass
 
-    app = QApplication(sys.argv)
-
-    qInstallMessageHandler(qt_message_handler)
-
-    # Load and apply stylesheet
-    qss_path = os.path.join(os.path.dirname(__file__), "style.qss")
-    if os.path.exists(qss_path):
-        with open(qss_path, "r") as f:
-            app.setStyleSheet(f.read())
-    else:
-        print(f"File {qss_path} does not exists!")
-    
-    size = (1200, 800)
-
-    # Create and show main window
-    window = FileExplorer(size)
-    window.show()
-
-    # Start the event loop
-    app.exec()
+    def on_sort_videos(self):
+        pass
