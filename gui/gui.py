@@ -59,7 +59,7 @@ class FileExplorer(QMainWindow):
         self.tree.setModel(self.model)
         self.tree.setRootIndex(self.model.index(QDir.rootPath()))
         self.tree.setHeaderHidden(True)  
-        self.tree.setColumnWidth(0, 100) 
+        self.tree.setColumnWidth(0, 300) 
 
         # List View (files)
         self.list_view = QListView()
