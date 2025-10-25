@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import os
 import sys
 
@@ -12,7 +14,9 @@ from PySide6.QtWidgets import (
     QListView, 
     QSplitter,
     QTreeView, 
-    QHBoxLayout
+    QHBoxLayout,
+    QComboBox,
+    QInputDialog
 )
 
 from PySide6.QtGui import QIcon
@@ -21,7 +25,8 @@ from PySide6.QtCore import Qt, QDir, qInstallMessageHandler
 
 from PySide6.QtGui import QPalette, QBrush, QPixmap
 
-from core.file_sorter import sort_files
+from core.file_sorter import FileSorter
+from core.convert import Convert
 
 class FileExplorer(QMainWindow):
     def __init__(self, size: tuple):
@@ -81,11 +86,13 @@ class FileExplorer(QMainWindow):
         
         # Later add one button "Sort" and then you choose what type of sort "all files, videos, images"
 
-        convertion_button = QPushButton("Convert")
-        convertion_button.clicked.connect(self.on_convertion_file)
+        conversion_button = QPushButton("Convert")
+        conversion_button.clicked.connect(self.on_conversion_file)
 
         # Later add the select box where we choose what type of convertion to use "png -> jpg, jpg -> png"
-
+        self.conversion_type_dropdown = QComboBox()
+        self.conversion_type_dropdown.addItems([".jpg -> .png", ".png -> .jpg", ".png -> .svg", ".svg -> .png"])
+        
         # Maybe late there are a "+" button to adding and installing a important module to use 
 
         add_module_button = QPushButton("+")
@@ -93,7 +100,7 @@ class FileExplorer(QMainWindow):
         delete_duplicates_button = QPushButton("Delete Duplicates")
         delete_duplicates_button.clicked.connect(self.on_delete_duplicates)
 
-        self.buttons_list = [sort_files_button, sort_images_button, sort_videos_button, convertion_button, delete_duplicates_button, add_module_button]
+        self.buttons_list = [sort_files_button, sort_images_button, sort_videos_button, conversion_button, delete_duplicates_button, add_module_button]
 
         # Add buttons to a layout
         button_widget = QWidget()
@@ -101,7 +108,7 @@ class FileExplorer(QMainWindow):
         button_layout.addWidget(sort_files_button)
         button_layout.addWidget(sort_images_button)
         button_layout.addWidget(sort_videos_button)
-        button_layout.addWidget(convertion_button)
+        button_layout.addWidget(conversion_button)
         button_layout.addWidget(delete_duplicates_button)
         button_layout.addWidget(add_module_button)
         button_layout.addStretch()  # Add stretch to align buttons at the top
@@ -170,26 +177,54 @@ class FileExplorer(QMainWindow):
             QMessageBox.warning(self, "Warning", "Please select a valid folder to sort.")
                 
 
-    def on_sort_files(self, source_folder):
-        """ Call the sort_files function and handle errors. """
-        print(f"Sorting files in: {source_folder}")
+    def on_sort_files(self):
+        """ Call the FileSorter class and handle errors. """
+        if not self.selected_folder: 
+            QMessageBox.warning(self, "Warning", "Please select a folder first.")
+            return  
         
-        try: 
-                # Call the sort_files function
-                sort_files(source_dir=source_folder)
-                QMessageBox.information(self, "Success", f"Files have been sorted in: {source_folder}")
- 
-        except Exception as e:  
-
-                QMessageBox.critical(self, "Error", f"An error occured: {e}")
-                self.list_view.setRootIndex(self.last_valid_index)
+        try:
+            sorter = FileSorter(self.selected_folder, min_size=1024)
+            sorter.sort_files()
+            QMessageBox.information(self, "Success", "Files have been sorted successfully.")
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"An error occurred: {e}")
     
     def on_sort_images(self):
         """ Call the sort_images function and handle errors. """
         pass
 
-    def on_convertion_file(self):
-        pass
+    def on_conversion_file(self):
+        """ Handle file conversion based on user selection. """
+        if not self.selected_folder:
+            QMessageBox.warning(self, "Warning", "Please select a folder first.")
+            return
+
+        # Get the list of conversion types
+        conversion_types = self.conversion_type_dropdown.itemText(0)
+        conversion_types = [self.conversion_type_dropdown.itemText(i) for i in range(self.conversion_type_dropdown.count())]
+
+        # Create a message box with the list of options
+        conversion_type, ok = QInputDialog.getItem(
+            self, 
+            "Select Conversion Type", 
+            "Choose a conversion type:", 
+            conversion_types, 
+            0, 
+            False
+        )
+
+        if not ok or not conversion_type:
+            QMessageBox.warning(self, "Warning", "No conversion type selected.")
+            return
+
+        try:
+            converter = Convert(source_dir=self.selected_folder, conversion_type=conversion_type)
+            converter.convert()
+            QMessageBox.information(self, "Success", f"Conversion completed: {conversion_type}")
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"An error occurred: {e}")
+
 
     def on_delete_duplicates(self):
         pass

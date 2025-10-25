@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 
 import os
 import hashlib
@@ -38,24 +39,26 @@ import cv2
 # - mp3: pydub, mutagen 
 # - recursion searching folder: os, pathlib
 
-def calculate_hash(filepath):
-    """ Calculate the file hash. """
-    hash_func = hashlib.sha256()
-    with open(filepath, "rb") as f:
-        while chunk := f.read(8192):
-            hash_func.update(chunk)
-    return hash_func.hexdigest()
+class IndentifyDuplicates:
 
-def find_duplicates(directory):
-    """ Find the duplicates in folder. """
-    files = {}
-    for root, _, filenames in os.walk(directory):
-        for filename in filenames:
-            filepath = os.path.join(root, filename)
-            file_hash = calculate_hash(filepath)
-            if file_hash in files:
-                print(f"Duplikat: {filepath} i {files[file_hash]}")
-            else:
-                files[file_hash] = filepath
+    def calculate_hash(filepath):
+        """ Calculate the file hash. """
+        hash_func = hashlib.sha256()
+        with open(filepath, "rb") as f:
+            while chunk := f.read(8192):
+                hash_func.update(chunk)
+        return hash_func.hexdigest()
 
-find_duplicates("/path/to/folder")
+    def find_duplicates(directory):
+        """ Find the duplicates in folder. """
+        files = {}
+        for root, _, filenames in os.walk(directory):
+            for filename in filenames:
+                filepath = os.path.join(root, filename)
+                file_hash = calculate_hash(filepath)
+                if file_hash in files:
+                    print(f"Duplikat: {filepath} i {files[file_hash]}")
+                else:
+                    files[file_hash] = filepath
+
+    find_duplicates("/path/to/folder")
