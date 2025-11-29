@@ -5,18 +5,6 @@ It automatically moves files into subfolders based on their extensions, skips sm
 or empty documents, and supports batch processing of multiple directories. 
 Ideal for cleaning up downloads, recovered files, or messy folders efficiently.
 
-## Goal
-
-In the future this will be AI-based photo organization tool designed to automatically 
-categorize and sort images into meaningful folders. Instead of spending hours manually moving 
-files, you provide the application with a reference dataset of already sorted photos. 
-Using this dataset, the AI learns to recognize categories (such as family, pets, holidays, landscapes) 
-and then applies this knowledge to classify and sort new, unsorted images.
-
-This project aims to make photo management faster, smarter, and more intuitive. 
-It can be adapted for personal use (organizing family albums), professional workflows 
-(photographers sorting thousands of shots), or specialized domains (medical imaging, research datasets, etc.).
-
 ## Features
 
 - Sorts files into folders by extension
