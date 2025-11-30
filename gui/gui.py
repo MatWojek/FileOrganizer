@@ -78,14 +78,6 @@ class FileExplorer(QMainWindow):
         #sort_files_button.setObjectName("sortFilesButton")
         sort_files_button.clicked.connect(self.on_button_click)
 
-        sort_images_button = QPushButton("Sort Image")
-        sort_images_button.clicked.connect(self.on_sort_images)
-
-        sort_videos_button = QPushButton("Sort Videos")
-        sort_videos_button.clicked.connect(self.on_sort_videos)
-        
-        # Later add one button "Sort" and then you choose what type of sort "all files, videos, images"
-
         conversion_button = QPushButton("Convert")
         conversion_button.clicked.connect(self.on_conversion_file)
 
@@ -96,20 +88,14 @@ class FileExplorer(QMainWindow):
         # Maybe late there are a "+" button to adding and installing a important module to use 
 
         add_module_button = QPushButton("+")
-      
-        delete_duplicates_button = QPushButton("Delete Duplicates")
-        delete_duplicates_button.clicked.connect(self.on_delete_duplicates)
 
-        self.buttons_list = [sort_files_button, sort_images_button, sort_videos_button, conversion_button, delete_duplicates_button, add_module_button]
+        self.buttons_list = [sort_files_button, conversion_button, add_module_button]
 
         # Add buttons to a layout
         button_widget = QWidget()
         button_layout = QVBoxLayout()
         button_layout.addWidget(sort_files_button)
-        button_layout.addWidget(sort_images_button)
-        button_layout.addWidget(sort_videos_button)
         button_layout.addWidget(conversion_button)
-        button_layout.addWidget(delete_duplicates_button)
         button_layout.addWidget(add_module_button)
         button_layout.addStretch()  # Add stretch to align buttons at the top
         button_widget.setLayout(button_layout)
@@ -190,10 +176,6 @@ class FileExplorer(QMainWindow):
         except Exception as e:
             QMessageBox.critical(self, "Error", f"An error occurred: {e}")
     
-    def on_sort_images(self):
-        """ Call the sort_images function and handle errors. """
-        pass
-
     def on_conversion_file(self):
         """ Handle file conversion based on user selection. """
         if not self.selected_folder:
@@ -224,10 +206,3 @@ class FileExplorer(QMainWindow):
             QMessageBox.information(self, "Success", f"Conversion completed: {conversion_type}")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"An error occurred: {e}")
-
-
-    def on_delete_duplicates(self):
-        pass
-
-    def on_sort_videos(self):
-        pass
