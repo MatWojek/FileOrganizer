@@ -156,7 +156,7 @@ class FileExplorer(QMainWindow):
 
         if folder and os.path.isdir(folder):
             try:
-                self.on_sort_files(folder)
+                self.on_sort_files()
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"An error occurred: {e}")
         else:
